@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import argparse
-import csv
 import gzip
 import json
 import sys
@@ -39,16 +38,22 @@ def load_candidates(path: Path) -> List[Dict[str, Any]]:
 
 def save_submission(results: List[Dict[str, Any]], output_path: Path) -> None:
     print(f"Saving submission to {output_path}...")
-    with output_path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=["candidate_id", "rank", "score", "reasoning"])
-        writer.writeheader()
-        for row in results:
-            writer.writerow({
-                "candidate_id": row["candidate_id"],
-                "rank": row["rank"],
-                "score": row["score"],
-                "reasoning": row["reasoning"],
-            })
+    if output_path.suffix.lower() == ".xlsx":
+        import pandas as pd
+        df = pd.DataFrame(results)[["candidate_id", "rank", "score", "reasoning"]]
+        df.to_excel(output_path, index=False, engine="openpyxl")
+    else:
+        import csv
+        with output_path.open("w", newline="", encoding="utf-8") as handle:
+            writer = csv.DictWriter(handle, fieldnames=["candidate_id", "rank", "score", "reasoning"])
+            writer.writeheader()
+            for row in results:
+                writer.writerow({
+                    "candidate_id": row["candidate_id"],
+                    "rank": row["rank"],
+                    "score": row["score"],
+                    "reasoning": row["reasoning"],
+                })
     print(f"Saved {len(results)} rows")
 
 
@@ -82,7 +87,7 @@ def validate_results(results: List[Dict[str, Any]], expected_count: int = 100) -
 def main() -> None:
     parser = argparse.ArgumentParser(description="RecruiterMind unified ranking submission generator")
     parser.add_argument("--candidates", required=True, help="Path to candidates.jsonl or sample JSON")
-    parser.add_argument("--out", default="submission.csv", help="Output CSV path")
+    parser.add_argument("--out", default="submission.csv", help="Output CSV/XLSX path")
     parser.add_argument("--jd", default=None, help="Optional JD text file")
     parser.add_argument("--cache-dir", default="./cache", help="Embedding cache directory")
     parser.add_argument("--no-embeddings", action="store_true", help="Disable semantic embeddings (faster)")
@@ -116,15 +121,17 @@ def main() -> None:
     print(f"Ranking completed in {elapsed:.1f}s")
 
     save_submission(results, Path(args.out))
-    validate_results(results, expected_count=args.top_k)
-
-    print("\n" + "=" * 60)
-    print("SUBMISSION GENERATED")
-    print("=" * 60)
-    print(f"Output: {args.out}")
-    for row in results[:10]:
-        print(f"  {row['rank']:3d}. {row['candidate_id']}  score={row['score']:.4f}")
-        print(f"       {row['reasoning'][:110]}...")
+    if args.out.endswith(".xlsx"):
+        print(f"✓ XLSX submission saved: {args.out}")
+    else:
+        validate_results(results, expected_count=args.top_k)
+        print("\n" + "=" * 60)
+        print("SUBMISSION GENERATED")
+        print("=" * 60)
+        print(f"Output: {args.out}")
+        for row in results[:10]:
+            print(f"  {row['rank']:3d}. {row['candidate_id']}  score={row['score']:.4f}")
+            print(f"       {row['reasoning'][:110]}...")
 
 
 if __name__ == "__main__":
