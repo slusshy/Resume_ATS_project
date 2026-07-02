@@ -1,0 +1,51 @@
+team_name: "RecruiterMind AI"
+
+primary_contact:
+  name: "Team Lead"
+  email: "team@example.com"
+  phone: "+91-XXXXXXXXXX"
+
+team_members:
+  - name: "Team Lead"
+    email: "team@example.com"
+    role: "ML Engineer"
+
+github_repo: "https://github.com/YOUR_USERNAME/Resume_ATS_project"
+sandbox_link: "https://huggingface.co/spaces/YOUR_USERNAME/recruitermind-ranker"
+
+reproduce_command: "python tools/rank_candidates_premium.py --candidates dataset/simple/candidates.jsonl --out submission.csv --no-embeddings --top-k 100 --premium"
+
+compute:
+  platform: "Windows 11 / Local CPU"
+  cpu_cores: 8
+  ram_gb: 16
+  python_version: "3.11+"
+  os: "Windows 11"
+  uses_gpu_for_inference: false
+  has_network_during_ranking: false
+  pre_computation_required: false
+  pre_computation_time_minutes: 0
+
+ai_tools_used:
+  - "Cursor"
+  - "Claude"
+
+ai_usage_summary: |
+  Used Cursor/Claude for architecture design and implementation.
+  No candidate data was sent to external LLM APIs during ranking.
+
+methodology_summary: |
+  Recruiter-style hybrid ranker: title/role fit is the primary signal (not keyword density).
+  Career narratives are scored for production retrieval/ranking evidence; skills are trusted
+  only when backed by duration and endorsements. Honeypots are filtered via title-career
+  coherence, chronology validation, and reject-role exclusion. Two-stage pipeline coarse-filters
+  100K profiles then deep-scores top 5K. Optional bge-small narrative embeddings are research-only;
+  the official submission path is deterministic, CPU-only, offline, and requires no pre-computation.
+  Same RecruiterScorer powers hackathon submission and FastAPI /analyze/ endpoint.
+
+declarations:
+  read_submission_spec: true
+  code_is_original_work: true
+  no_collusion: true
+  honeypot_check_done: true
+  reproduction_tested: true

@@ -1,0 +1,1 @@
+"""RecruiterMind AI package."""

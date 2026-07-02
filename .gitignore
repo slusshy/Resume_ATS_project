@@ -1,0 +1,78 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+backend_server.log
+frontend_server.log
+
+# Node
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Cache
+cache/
+test_cache/
+*.npy
+*.pkl
+
+# Environment
+.env
+.env.local
+
+# Dataset (large files)
+dataset/
+*.jsonl
+*.csv
+
+# Batch files (Windows-specific)
+*.bat
+
+# Submission files
+submission.csv
+submission_premium.csv
+test_submission.csv
+
+# Documentation (keep only README.md)
+*.md
+!README.md
+
+# Temporary analysis files
+dataset_analysis*.py
+dataset_analysis*.md
+examples_*.py
+top_100_candidates.json
+recruitermind.db
+
+# Test files
+test_backend.py
+check_servers.py
+migrate_db.py
+
+# Upload scripts
+upload_*.py
+
+# Coverage
+htmlcov/
+.coverage
