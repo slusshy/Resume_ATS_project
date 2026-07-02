@@ -10,8 +10,8 @@ team_members:
     email: "team@example.com"
     role: "ML Engineer"
 
-github_repo: "https://github.com/YOUR_USERNAME/Resume_ATS_project"
-sandbox_link: "https://huggingface.co/spaces/YOUR_USERNAME/recruitermind-ranker"
+github_repo: "https://github.com/slusshy/Resume_ATS_project"
+sandbox_link: "https://huggingface.co/spaces/slusshy/recruitermind-ranker"
 
 reproduce_command: "python tools/rank_candidates_premium.py --candidates dataset/simple/candidates.jsonl --out submission.csv --no-embeddings --top-k 100 --premium"
 
